@@ -11,12 +11,17 @@
   },
   "formatter": {
     "enabled": true,
+    "attributePosition": "multiline",
+    "bracketSameLine": false,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 100
   },
   "linter": {
     "enabled": true,
     "rules": {
+      "a11y": "warn",
+      "performance": "warn",
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
@@ -32,6 +37,20 @@
       "source": {
         "organizeImports": "on"
       }
+    }
+  },
+  "css": {
+    "formatter": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteStyle": "single"
     }
   }
 }
