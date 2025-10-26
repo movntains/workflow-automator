@@ -1,24 +1,15 @@
-'use client';
+import { requireAuth } from '@/lib/auth-utils';
+import { caller } from '@/trpc/server';
 
-import { Button } from '@/components/ui/button';
-import { authClient } from '@/lib/auth-client';
+export default async function Home() {
+  await requireAuth();
 
-export default function Home() {
-  const { data } = authClient.useSession();
+  const data = await caller.getUsers();
 
   return (
     <div className="flex flex-col gap-6">
-      {JSON.stringify(data)}
-
-      {data && (
-        <Button
-          onClick={() => {
-            authClient.signOut();
-          }}
-        >
-          Log Out
-        </Button>
-      )}
+      Protected server component
+      <div>{JSON.stringify(data, null, 2)}</div>
     </div>
   );
 }
