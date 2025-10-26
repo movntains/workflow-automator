@@ -16,24 +16,31 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-const loginSchema = z.object({
-  email: z.email('Please enter a valid email address.'),
-  password: z.string().min(8, 'Password is required.'),
-});
+const registerSchema = z
+  .object({
+    email: z.email('Please enter a valid email address.'),
+    password: z.string().min(8, 'Password is required.'),
+    confirmPassword: z.string('Please confirm your password.'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match.",
+    path: ['confirmPassword'],
+  });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export default function LoginForm() {
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+export default function RegisterForm() {
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
   const isPending = form.formState.isSubmitting;
 
-  const handleSubmit = async (values: LoginFormValues) => {
+  const handleSubmit = async (values: RegisterFormValues) => {
     console.log(values);
   };
 
@@ -41,9 +48,9 @@ export default function LoginForm() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader className="text-center">
-          <CardTitle>Welcome Back</CardTitle>
+          <CardTitle>Get Started</CardTitle>
 
-          <CardDescription>Log in to continue</CardDescription>
+          <CardDescription>Create your account to get started</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -111,24 +118,44 @@ export default function LoginForm() {
                     )}
                   />
 
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="********"
+                            {...field}
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <Button
                     type="submit"
                     className="w-full"
                     disabled={isPending}
                   >
-                    Login
+                    Register
                   </Button>
                 </div>
 
                 <div className="text-center text-sm">
                   <p>
-                    <span>Don't have an account? </span>
+                    <span>Already have an account? </span>
 
                     <Link
-                      href="/register"
+                      href="/login"
                       className="underline underline-offset-4"
                     >
-                      Sign Up
+                      Sign In
                     </Link>
                   </p>
                 </div>
