@@ -1,13 +1,24 @@
-import { caller } from '@/trpc/server';
+'use client';
 
-export default async function Home() {
-  const greeting = await caller.hello({
-    text: 'world',
-  });
+import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth-client';
+
+export default function Home() {
+  const { data } = authClient.useSession();
 
   return (
-    <div>
-      <h1>{greeting.greeting}</h1>
+    <div className="flex flex-col gap-6">
+      {JSON.stringify(data)}
+
+      {data && (
+        <Button
+          onClick={() => {
+            authClient.signOut();
+          }}
+        >
+          Log Out
+        </Button>
+      )}
     </div>
   );
 }
