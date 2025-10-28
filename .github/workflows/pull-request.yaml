@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Set Up Node Environment
         uses: actions/setup-node@v6
@@ -24,8 +26,6 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run Unit Tests
         run: npm run test
